@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, intial-scale = 1.0">
+        <title>Rental app</title>
+        <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+        
+        <!-- for styling Car Detailes Page -->
+        <style>
+            *{
+                box-sizing: border-box;
+            }
+  
+            html {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                font-family: 'Dosis', sans-serif;
+                line-height: 1.6;
+                color: #666;
+                background: #F6F6F6;
+            }
+  
+            #root {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+  
+            h1 {
+                text-align: center;
+                padding: 1.5rem 2.5rem;
+                background-image: linear-gradient(120deg, #fbc2eb 0%, #a6c1ee 100%);
+                margin: 0 0 2rem 0;
+                font-size: 1.5rem;
+                color: white;
+            }
+  
+            img {
+                margin: 1rem auto;
+                display: block;
+                max-width: 100%;
+            }
+            
+            INPUT{
+                margin: 1rem auto;
+                display: block;
+                max-width: 100%;
+                border: 2px solid black;
+                height: 30px;
+            }
+
+            p {
+                padding: 3px 3px 3px 3px;
+                margin: 0;
+            }
+  
+            .container {
+                display: flex;
+                flex-wrap: wrap;
+            }
+  
+            .card {
+                margin: 1rem;
+                background: white;
+                box-shadow: 2px 4px 25px rgba(0, 0, 0, .1);
+                border-radius: 12px;
+                overflow: hidden;
+                transition: all .2s linear;
+            }
+  
+            .card:hover {
+                box-shadow: 2px 8px 45px rgba(0, 0, 0, .15);
+                transform: translate3D(0, -2px, 0);
+            }
+  
+            @media screen and (min-width: 600px) {
+                .card { 
+                    flex: 1 1 calc(50% - 2rem);
+                }
+            }
+  
+            @media screen and (min-width: 900px) {
+                .card {
+                    flex: 1 1 calc(33% - 2rem);
+                }
+            }
+  
+            .card:nth-child(2n) h1 {
+                background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            }
+  
+            .card:nth-child(4n) h1 {
+                background-image: linear-gradient(120deg, #ff9a9e 0%, #fecfef 100%);
+            }
+  
+            .card:nth-child(5n) h1 {
+                background-image: linear-gradient(120deg, #ffc3a0 0%, #ffafbd 100%);
+            }
+
+            Button {
+                width: 100%;
+                background-image: linear-gradient(120deg, #ffc3a0 0%, #ffafbd 100%);
+                border: none;
+                color: white;
+                padding: 16px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                -webkit-transition-duration: 0.4s; /* Safari */
+                transition-duration: 0.4s;
+                cursor: pointer;
+                color: black; 
+            }
+  
+            BUTTON:hover {
+                background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+                color: black;
+            }
+
+            Button1 {
+                width: 100%;
+                background-image: linear-gradient(120deg, #ec644b 0%, #ff9478 100%);
+                border: none;
+                color: white;
+                padding: 16px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                -webkit-transition-duration: 0.4s; /* Safari */
+                transition-duration: 0.4s;
+                cursor: pointer;
+                color: black; 
+            }
+  
+            BUTTON1:hover {
+                background-image: linear-gradient(120deg, #ff9478 0%, #ec644b 100%);
+                color: black;
+            }
+
+            SEARCH_BUTTON {
+                background-image: linear-gradient(120deg, #ec644b 0%, #ff9478 100%);
+                border: none;
+                color: white;
+                padding: 16px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: block;
+                font-size: 16px;
+                margin: 1rem auto;
+                -webkit-transition-duration: 0.4s; /* Safari */
+                transition-duration: 0.4s;
+                cursor: pointer;
+                color: black;
+                max-width: 100%;
+            }
+
+            SEARCH_BUTTON:hover{
+                background-image: linear-gradient(120deg, #ff9478 0%, #ec644b 100%);
+                color: black;
+            }
+        </style>
+
+    </head>
+    <body>        
+            <div id="root"></div>
+        <script>
+        const app = document.getElementById('root');
+
+const logo = document.createElement('img');
+logo.src = 'https://firebasestorage.googleapis.com/v0/b/meal-bounce.appspot.com/o/car.png?alt=media&token=b6413641-0ee3-4e98-854f-316f6898c364';
+logo.setAttribute("width", "100");
+logo.setAttribute("height", "100");
+
+const container = document.createElement('div');
+container.setAttribute('class', 'container');
+
+
+app.appendChild(logo);
+app.appendChild(container);
+
+
+var url_string = window.location.href; //window.location.href
+      var url = new URL(url_string);
+      var temp_location = url.searchParams.get("inputlocation");
+      var temp_date = url.searchParams.get("inputdate");
+      console.log(temp_location);
+      console.log(temp_date);
+
+      var days = ["Sun", "Mon", "Tue","Wed","Thu","Fri","Sat"];
+      var dt = new Date(temp_date);
+      
+      var final_day = dt.getDay();
+      var req_date = days[final_day];
+
+var request = new XMLHttpRequest();
+request.open('GET', 'https://api.sheety.co/311576ae-321a-43e3-9a5b-61b3ac373d85', true);
+request.onload = function () {
+
+  // Begin accessing JSON data here
+  var data = JSON.parse(this.response);
+  data.sort(function(a,b){
+    return a.price - b.price;
+  });
+
+
+  if (request.status >= 200 && request.status < 400) {
+    data.forEach(cars => {
+      const card = document.createElement('div');
+      card.setAttribute('class', 'card');
+
+      const h1 = document.createElement('h1');
+      h1.textContent = cars.name;
+
+      const img = document.createElement('img');
+      img.setAttribute("src",cars.photo);
+
+      const location = document.createElement('p');
+      location.textContent = `Location : ${cars.location}`;
+
+      const price = document.createElement('p');
+      price.textContent = `Price : Rs. ${cars.price}`;
+      
+      const seats = document.createElement('p');
+      seats.textContent = `Seats : ${cars.seats}`;
+
+      const fuel_type = document.createElement('p');
+      fuel_type.textContent = `Fuel Type : ${cars.fuel_Type}`;
+
+      const Transmission = document.createElement('p');
+      Transmission.textContent = `Transmission : ${cars.transmission}`;
+
+      const car_type = document.createElement('p');
+      car_type.textContent = `Car Type : ${cars.car_Type}`;
+
+        var S = cars.availability;
+        const book_button = document.createElement('BUTTON');
+        book_button.innerHTML = "BOOK NOW";
+    
+        const not_avail = document.createElement('BUTTON1');
+        not_avail.innerHTML = "NOT AVAIL";
+        
+        
+      
+
+       if(cars.location.toLowerCase() == temp_location.toLowerCase())
+       {
+        container.appendChild(card);
+        card.appendChild(h1);
+        card.appendChild(img);
+        card.appendChild(price);
+        card.appendChild(location);
+        card.appendChild(seats);
+        card.appendChild(fuel_type);
+        card.appendChild(Transmission);
+        card.appendChild(car_type);
+        if(S.includes(req_date)){
+            card.appendChild(book_button);
+        }
+        else{
+            card.appendChild(not_avail);
+        }
+      } 
+    
+    });
+  } else {
+    const errorMessage = document.createElement('marquee');
+    errorMessage.textContent = `it's not working!`;
+    app.appendChild(errorMessage);
+  }
+}
+
+request.send();
+        </script>
+    </body>
+</html>
