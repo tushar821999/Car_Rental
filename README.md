@@ -1,4 +1,5 @@
-# Car_Rental
+# Car Rental
 Car Rental Web Application Prototype
 
-Live URL : https://carrental.pythonanywhere.com/
+# Website Preview
+
